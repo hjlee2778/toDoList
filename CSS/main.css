@@ -1,0 +1,99 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+
+.ex-layout {
+    background-color: #5C9677;
+    height: 100%; /* ex-layout이 화면 전체를 채우도록 설정 */
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.ex-layout .main-text {
+    float: left;
+    margin-top: 10px;
+    padding: 10%;
+    position: relative;
+    overflow: hidden;
+    font-family: "Moderustic", sans-serif;
+    font-size: 150px;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    color: white;
+}
+
+.first-line img {
+    margin-bottom: 40px; 
+    vertical-align: middle; 
+}
+
+.ex-layout .main-text .second-line {
+    letter-spacing: 30px;
+}
+
+.todo-img {
+    text-align: center; /* 이미지를 중앙 정렬 (기본 상태) */
+    margin-left: 90px; /* 이미지를 오른쪽으로 50px 이동 */
+}
+
+
+.ex-layout .footer {
+    background-color: #fff2c3;
+    width: 100%;
+    height: 20%;
+    margin-top: auto; /* flexbox를 사용하여 footer가 페이지 하단에 위치하게 함 */
+}
