@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+
     // 이벤트 위임을 사용하여 동적으로 생성된 체크 버튼에 이벤트 리스너 추가
     todoItemContainer.addEventListener('click', (event) => {
         if (event.target.classList.contains('complete-btn')) {
@@ -87,8 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             todoItem.classList.toggle('completed'); // 완료된 항목을 표시하기 위해 클래스 토글
         }
     });    
-    // 이벤트 위임을 사용하여 동적으로 생성된 연필 버튼에 이벤트 리스너 추가
-    // ToDo 항목 수정 기능
+    // ToDo 항목 수정 및 삭제 기능
     todoItemContainer.addEventListener('click', (event) => {
         if (event.target.classList.contains('edit-btn')) {
             const todoItem = event.target.closest('.todo-item');
@@ -103,11 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 inputField.type = 'text';
                 inputField.value = currentText;
                 inputField.className = 'edit-input';
-                todoDescription.innerHTML = ''; 
+                todoDescription.innerHTML = '';  // 기존 텍스트 제거
                 todoDescription.appendChild(inputField);
-                inputField.focus();  
+                inputField.focus();  // 입력 필드에 포커스
 
-
+                // 엔터 키 또는 포커스 아웃 시 수정 내용 저장
                 inputField.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') {
                         saveEdit(inputField, todoDescription, todoItem);
@@ -118,6 +118,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     saveEdit(inputField, todoDescription, todoItem);
                 });
             }
+        }
+
+    // ToDo 항목 삭제 기능
+    if (event.target.classList.contains('delete-btn')) {
+        const todoItem = event.target.closest('.todo-item');
+        todoItem.remove();  // 항목 삭제
+            
+        // 모든 항목이 삭제되었는지 확인하고, 빈 컨테이너를 숨김
+        if (todoItemContainer.children.length === 0) {
+            todoItemContainer.style.display = 'none';
+           }
         }
     });
 
