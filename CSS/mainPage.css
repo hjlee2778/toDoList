@@ -233,6 +233,13 @@ hr {
     color: #333;
 }
 
+.edit-input {
+    width: 100%;
+    border: none;
+    padding: 10px;
+}
+
+
 /*Category*/
 
 .category-search {
