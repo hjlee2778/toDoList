@@ -87,6 +87,50 @@ document.addEventListener('DOMContentLoaded', () => {
             todoItem.classList.toggle('completed'); // 완료된 항목을 표시하기 위해 클래스 토글
         }
     });    
+    // 이벤트 위임을 사용하여 동적으로 생성된 연필 버튼에 이벤트 리스너 추가
+    // ToDo 항목 수정 기능
+    todoItemContainer.addEventListener('click', (event) => {
+        if (event.target.classList.contains('edit-btn')) {
+            const todoItem = event.target.closest('.todo-item');
+            const todoDescription = todoItem.querySelector('.todo-description');
+
+            if (!todoItem.classList.contains('editing')) {
+                todoItem.classList.add('editing');
+
+                // 기존 텍스트를 입력 필드로 변환
+                const currentText = todoDescription.textContent.trim();
+                const inputField = document.createElement('input');
+                inputField.type = 'text';
+                inputField.value = currentText;
+                inputField.className = 'edit-input';
+                todoDescription.innerHTML = ''; 
+                todoDescription.appendChild(inputField);
+                inputField.focus();  
+
+
+                inputField.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        saveEdit(inputField, todoDescription, todoItem);
+                    }
+                });
+
+                inputField.addEventListener('blur', () => {
+                    saveEdit(inputField, todoDescription, todoItem);
+                });
+            }
+        }
+    });
+
+    function saveEdit(inputField, todoDescription, todoItem) {
+        const updatedText = inputField.value.trim();
+        todoItem.classList.remove('editing');  // 수정 모드 종료
+
+        if (updatedText !== '') {
+            todoDescription.textContent = updatedText;
+        } else {
+            todoDescription.textContent = '할 일을 입력하세요';  // 빈 텍스트를 방지
+        }
+    }
 
     // 투두리스트 초기 상태를 숨김
     todoItemContainer.style.display = 'none';
