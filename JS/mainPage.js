@@ -4,7 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const categoryDropdown = document.getElementById('category-dropdown');
     const categoryList = document.getElementById('category-list');
     const addCategoryButton = document.getElementById('add-category-button');
-
+    const todoInput = document.getElementById('todo-input');
+    const addTodoBtn = document.getElementById('add-todo-btn');
+    const todoItemContainer = document.querySelector('.todo-item-container');
+    
     // 카테고리 목록을 렌더링하는 함수
     function renderCategories() {
         categoryList.innerHTML = ''; // 기존 목록 초기화
@@ -47,6 +50,38 @@ document.addEventListener('DOMContentLoaded', () => {
             categoryDropdown.classList.add('hidden');
         }
     });
+
+    // 새로운 ToDo 항목 추가
+    addTodoBtn.addEventListener('click', () => {
+        const todoText = todoInput.value.trim();
+        if (todoText !== '') {
+            const todoCategory = categoryButton.textContent.trim() || 'Uncategorized';
+            const todoDate = new Date().toISOString().split('T')[0]; // 오늘 날짜
+            
+            const todoItem = document.createElement('div');
+            todoItem.className = 'todo-item';
+
+            todoItem.innerHTML = `
+                <div class="todo-title-date">
+                    <span class="todo-category">${todoCategory}</span>
+                    <span class="todo-date">${todoDate}</span>
+                </div>
+                <div class="todo-description">${todoText}</div>
+                <div class="todo-actions">
+                    <button class="complete-btn">✔</button>
+                    <button class="edit-btn">✎</button>
+                    <button class="delete-btn">🗑</button>
+                </div>
+            `;
+
+            todoItemContainer.appendChild(todoItem);
+            todoInput.value = ''; // 입력 필드 초기화
+            todoItemContainer.style.display = 'block'; // 투두리스트 항목이 추가될 때 컨테이너 표시
+        }
+    });
+
+    // 투두리스트 초기 상태를 숨김
+    todoItemContainer.style.display = 'none';
 
     renderCategories(); // 초기 렌더링
 });
