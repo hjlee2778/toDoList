@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./CSS/listPage.css"/>
-    <script defer src="./JS/listPage.js"></script>
+    <script defer src="./JS/category.js"></script>
     <title>listPage</title>
 </head>
 <body>
@@ -14,7 +14,11 @@
         </div>
         <div class="right-section">
             <div class="category-search">
-                <button>Select Category</button>
+                <button id="category-button">Select Category</button>
+                <div id="category-dropdown" class="category-dropdown hidden">
+                    <div id="category-list"></div>
+                    <button id="add-category-button"><img src="./img/plus.png" width="20px" height="20px"></button>
+                </div>
                 <input type="text" placeholder="Search by name">
             </div>
         
