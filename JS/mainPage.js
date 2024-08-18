@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const categories = ["밥", "공부", "운동"];
+    const categories = ["Study", "Exercise", "Promise", "Eat"];
     const categoryButton = document.getElementById('category-button');
     const categoryDropdown = document.getElementById('category-dropdown');
     const categoryList = document.getElementById('category-list');
@@ -79,6 +79,14 @@ document.addEventListener('DOMContentLoaded', () => {
             todoItemContainer.style.display = 'block'; // 투두리스트 항목이 추가될 때 컨테이너 표시
         }
     });
+
+    // 이벤트 위임을 사용하여 동적으로 생성된 체크 버튼에 이벤트 리스너 추가
+    todoItemContainer.addEventListener('click', (event) => {
+        if (event.target.classList.contains('complete-btn')) {
+            const todoItem = event.target.closest('.todo-item');
+            todoItem.classList.toggle('completed'); // 완료된 항목을 표시하기 위해 클래스 토글
+        }
+    });    
 
     // 투두리스트 초기 상태를 숨김
     todoItemContainer.style.display = 'none';
