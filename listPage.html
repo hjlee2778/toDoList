@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./CSS/listPage.css"/>
+    <script defer src="./JS/listPage.js"></script>
     <title>listPage</title>
 </head>
 <body>
@@ -17,9 +18,33 @@
                 <input type="text" placeholder="Search by name">
             </div>
         
-            <div class="todo-background"> <!-- 연두색 배경 박스 -->
-
+            <div class="todo-background">
+                <div class="todo-input-container">
+                    <input type="text" id="todo-input" placeholder="할 일을 입력하세요">
+                    <button id="add-todo-btn"><span><img src="./img/plus.png" width="25px" height="25px"></span></button>
+                </div>
+            
+                <hr>
+            
+                <div class="todo-item-container">
+                    <div class="todo-item">
+                        <div class="todo-title-date">
+                            <span class="todo-category">밥</span>
+                            <span class="todo-date">2024-08-14</span>
+                        </div>
+                        <div class="todo-description">
+                            냠냠
+                        </div>
+                        <div class="todo-actions">
+                            <button class="complete-btn">✔</button>
+                            <button class="edit-btn">✎</button>
+                            <button class="delete-btn">🗑</button>
+                        </div>
+                    </div>
+                </div>
             </div>
+            
+            
         
             <div class="footer">
                 <div class="completed-tasks">
