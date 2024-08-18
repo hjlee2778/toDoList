@@ -142,6 +142,7 @@ hr {
 }
 
 .todo-item {
+    position: relative; /* 체크 아이콘을 절대 위치로 배치하기 위해 */
     display: flex;
     flex-direction: column; /* 항목을 세로로 쌓도록 설정 */
     padding: 15px;
@@ -151,6 +152,24 @@ hr {
     position: relative;
     width: 95%; /* 항목이 부모 요소의 너비를 가득 채우도록 */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 완료된 항목을 위한 스타일 */
+.todo-item.completed .todo-description {
+    background-color: rgba(0, 0, 0, 0.5); /* 검정색 반투명 배경 */
+    position: relative;
+}
+
+/* 체크 아이콘 스타일 */
+.todo-item.completed::after {
+    content: '✔'; /* 체크 아이콘 */
+    position: absolute;
+    top: 84px;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 중앙으로 위치 */
+    font-size: 24px;
+    color: white; /* 흰색 체크 표시 */
+    font-weight: bold;
 }
 
 .todo-title-date {
@@ -171,6 +190,8 @@ hr {
 }
 
 .todo-category {
+    min-width: 120px;
+    max-width: 150px;
     width: 60px;
     text-align: center;
 }
@@ -225,7 +246,7 @@ hr {
 
 .category-search button {
     min-width: 140px;
-    max-width: 170px;
+    max-width: 190px;
     background-color: #d1b593;
     border: none;
     padding: 10px;
