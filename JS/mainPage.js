@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const todoInput = document.getElementById('todo-input');
     const addTodoBtn = document.getElementById('add-todo-btn');
     const todoItemContainer = document.querySelector('.todo-item-container');
+    const completedTasksElement = document.querySelector('.completed-tasks span');
+    const pendingTasksElement = document.querySelector('.pending-tasks span');
     
     // 카테고리 목록을 렌더링하는 함수
     function renderCategories() {
@@ -77,6 +79,12 @@ document.addEventListener('DOMContentLoaded', () => {
             todoItemContainer.appendChild(todoItem);
             todoInput.value = ''; // 입력 필드 초기화
             todoItemContainer.style.display = 'block'; // 투두리스트 항목이 추가될 때 컨테이너 표시
+
+            // 비어있을 경우 실행되지 않는 걸 적용하기 위해 잔여 투두리스트 증가를 이 로직에서 실행.
+            pendingTasks++;
+            updateTaskCounter();
+
+            
         }
     });
 
@@ -85,9 +93,23 @@ document.addEventListener('DOMContentLoaded', () => {
     todoItemContainer.addEventListener('click', (event) => {
         if (event.target.classList.contains('complete-btn')) {
             const todoItem = event.target.closest('.todo-item');
-            todoItem.classList.toggle('completed'); // 완료된 항목을 표시하기 위해 클래스 토글
+            if (todoItem.classList.contains('completed')) {
+                // 이미 완료된 항목을 다시 미완료 상태로 변경
+                todoItem.classList.remove('completed');
+                completedTasks--;
+                pendingTasks++;
+            } else {
+                // 미완료된 항목을 완료 상태로 변경
+                todoItem.classList.add('completed');
+                completedTasks++;
+                pendingTasks--;
+            }
+            updateTaskCounter();
         }
-    });    
+    });
+    
+    
+    
     // ToDo 항목 수정 및 삭제 기능
     todoItemContainer.addEventListener('click', (event) => {
         if (event.target.classList.contains('edit-btn')) {
@@ -142,6 +164,35 @@ document.addEventListener('DOMContentLoaded', () => {
             todoDescription.textContent = '할 일을 입력하세요';  // 빈 텍스트를 방지
         }
     }
+
+    /* 투두리스트 완료 정도를 나타내는 기능*/
+
+    let completedTasks = 0;
+    let pendingTasks = 0;
+    
+    // 작업이 올라가고 삭제 될 때, 예를들면 1이 나오게 되면 01로 바꿔줌. 두자리수는 정상적으로 출력.
+    function updateTaskCounter () {
+        completedTasksElement.textContent = completedTasks.toString().padStart(2, '0');
+        pendingTasksElement.textContent = pendingTasks.toString().padStart(2, '0');
+    }
+
+    // 투두리스트 삭제될 경우
+    todoItemContainer.addEventListener('click', (event) => {
+        if (event.target.classList.contains('delete-btn')) {
+            const todoItem = event.target.closest('.todo-item');
+            if (todoItem.classList.contains('completed')) {
+                completedTasks--;
+            } else {
+                pendingTasks--;
+            }
+        
+        todoItem.remove();
+        updateTaskCounter();
+      }  
+    });
+    //작업 카운터 초기화
+    updateTaskCounter();
+
 
     // 투두리스트 초기 상태를 숨김
     todoItemContainer.style.display = 'none';
