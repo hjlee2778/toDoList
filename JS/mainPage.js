@@ -9,36 +9,52 @@ document.addEventListener('DOMContentLoaded', () => {
     const todoItemContainer = document.querySelector('.todo-item-container');
     const completedTasksElement = document.querySelector('.completed-tasks span');
     const pendingTasksElement = document.querySelector('.pending-tasks span');
-    
-    // 카테고리 목록을 렌더링하는 함수
+    const calendarButton = document.getElementById('calendar-button');
+    const overlay = document.getElementById('overlay');
+    const calendarTodoDisplay = document.querySelector('.calendar-box h2'); 
+    const searchInput = document.querySelector('input[placeholder="Search by name"]'); // 검색창
+    const todoData = {}; 
+    let currentDisplayedDate = ''; 
+    const datesContainer = document.querySelector('.dates');
+    let selectedDateElement = null;
+
+    const dateInput = document.getElementById('date-input');
+    const today = new Date();
+    const formattedToday = today.toISOString().split('T')[0];
+    dateInput.value = formattedToday;
+    currentDisplayedDate = formattedToday;
+
+    calendarButton.addEventListener('click', () => {
+        overlay.classList.toggle('visible'); 
+    });
+
     function renderCategories() {
-        categoryList.innerHTML = ''; // 기존 목록 초기화
+        categoryList.innerHTML = ''; 
         categories.forEach((category) => {
             const categoryItem = document.createElement('div');
             categoryItem.textContent = category;
             categoryItem.style.padding = '10px';
             categoryItem.style.cursor = 'pointer';
-            categoryItem.style.backgroundColor = '#f2e1df';
+            categoryItem.style.backgroundColor = '#5691A8';
+            categoryItem.style.color = '#ffffff';
             categoryItem.style.marginBottom = '5px';
             categoryItem.style.borderRadius = '5px';
             categoryItem.addEventListener('click', () => {
-                categoryButton.textContent = category; // 버튼 텍스트 업데이트
-                categoryDropdown.classList.add('hidden'); // 드롭다운 숨기기
+                categoryButton.textContent = category; 
+                categoryDropdown.classList.add('hidden'); 
             });
             categoryList.appendChild(categoryItem);
         });
     }
 
-    // 카테고리 버튼 클릭 시 드롭다운 표시/숨기기
     categoryButton.addEventListener('click', (event) => {
-        event.stopPropagation(); // 이벤트 버블링 방지
+        event.stopPropagation(); 
         categoryDropdown.classList.toggle('hidden');
         renderCategories();
     });
 
-    // 새로운 카테고리 추가 기능
     addCategoryButton.addEventListener('click', (event) => {
-        event.stopPropagation(); // 이벤트 버블링 방지
+        event.stopPropagation(); 
         const newCategory = prompt('새로운 카테고리를 입력하세요:');
         if (newCategory && !categories.includes(newCategory)) {
             categories.push(newCategory);
@@ -46,27 +62,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 페이지의 다른 부분 클릭 시 드롭다운 숨기기
     document.addEventListener('click', (event) => {
         if (!categoryDropdown.classList.contains('hidden')) {
             categoryDropdown.classList.add('hidden');
         }
     });
 
-    // 새로운 ToDo 항목 추가
+    $(dateInput).datepicker({
+        dateFormat: 'yy-mm-dd',
+        onSelect: function(dateText) {
+            dateInput.value = dateText; 
+        }
+    });
+
     addTodoBtn.addEventListener('click', () => {
         const todoText = todoInput.value.trim();
-        if (todoText !== '') {
+        const selectedDate = dateInput.value.trim(); 
+
+        if (todoText !== '' && selectedDate !== '') {
             const todoCategory = categoryButton.textContent.trim() || 'Uncategorized';
-            const todoDate = new Date().toISOString().split('T')[0]; // 오늘 날짜
-            
             const todoItem = document.createElement('div');
             todoItem.className = 'todo-item';
 
             todoItem.innerHTML = `
                 <div class="todo-title-date">
                     <span class="todo-category">${todoCategory}</span>
-                    <span class="todo-date">${todoDate}</span>
+                    <span class="todo-date">${selectedDate}</span> 
                 </div>
                 <div class="todo-description">${todoText}</div>
                 <div class="todo-actions">
@@ -77,29 +98,81 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
 
             todoItemContainer.appendChild(todoItem);
-            todoInput.value = ''; // 입력 필드 초기화
-            todoItemContainer.style.display = 'block'; // 투두리스트 항목이 추가될 때 컨테이너 표시
+            todoItemContainer.style.display = 'block'; 
 
-            // 비어있을 경우 실행되지 않는 걸 적용하기 위해 잔여 투두리스트 증가를 이 로직에서 실행.
+            if (!todoData[selectedDate]) {
+                todoData[selectedDate] = [];
+            }
+            todoData[selectedDate].push({
+                category: todoCategory,
+                description: todoText
+            });
+
             pendingTasks++;
             updateTaskCounter();
+            todoInput.value = '';
 
-            
+            if (selectedDate === currentDisplayedDate) {
+                renderTodoList(selectedDate);
+            }
         }
     });
 
+    function renderTodoList(date) {
+        if (todoData[date]) {
+            const todoList = todoData[date]
+            .map(item => `
+                <div class="todo-list-item">
+                    <span class="todo-description">${item.description}</span>
+                    <span class="todo-category">${item.category}</span>
+                </div>
+                <hr>
+            `)
+            .join(''); // 항목 간 구분선을 추가
+            calendarTodoDisplay.innerHTML = todoList;
+        } else {
+            calendarTodoDisplay.innerHTML = '<img src="../img/question-person.jpg" alt="No Data" style="width: 60%; height: auto;"/>';
+        }
+    }
 
-    // 이벤트 위임을 사용하여 동적으로 생성된 체크 버튼에 이벤트 리스너 추가
+    datesContainer.addEventListener('click', (event) => {
+        if (event.target.tagName === 'LI' && !event.target.classList.contains('inactive')) {
+            const selectedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(event.target.textContent).padStart(2, '0')}`;
+            currentDisplayedDate = selectedDate;
+
+            if (selectedDateElement) {
+                selectedDateElement.classList.remove('selected');
+            }
+            event.target.classList.add('selected');
+            selectedDateElement = event.target;
+
+            renderTodoList(selectedDate);
+        }
+    });
+
+    // 검색창에서 검색 기능 구현
+    searchInput.addEventListener('input', () => {
+        const searchText = searchInput.value.toLowerCase();
+        const todoItems = todoItemContainer.querySelectorAll('.todo-item');
+
+        todoItems.forEach(item => {
+            const description = item.querySelector('.todo-description').textContent.toLowerCase();
+            if (description.includes(searchText)) {
+                item.style.display = ''; // 검색어와 일치하는 항목은 보이게
+            } else {
+                item.style.display = 'none'; // 검색어와 일치하지 않는 항목은 숨기기
+            }
+        });
+    });
+
     todoItemContainer.addEventListener('click', (event) => {
         if (event.target.classList.contains('complete-btn')) {
             const todoItem = event.target.closest('.todo-item');
             if (todoItem.classList.contains('completed')) {
-                // 이미 완료된 항목을 다시 미완료 상태로 변경
                 todoItem.classList.remove('completed');
                 completedTasks--;
                 pendingTasks++;
             } else {
-                // 미완료된 항목을 완료 상태로 변경
                 todoItem.classList.add('completed');
                 completedTasks++;
                 pendingTasks--;
@@ -107,10 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateTaskCounter();
         }
     });
-    
-    
-    
-    // ToDo 항목 수정 및 삭제 기능
+
     todoItemContainer.addEventListener('click', (event) => {
         if (event.target.classList.contains('edit-btn')) {
             const todoItem = event.target.closest('.todo-item');
@@ -118,18 +188,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!todoItem.classList.contains('editing')) {
                 todoItem.classList.add('editing');
-
-                // 기존 텍스트를 입력 필드로 변환
                 const currentText = todoDescription.textContent.trim();
                 const inputField = document.createElement('input');
                 inputField.type = 'text';
                 inputField.value = currentText;
                 inputField.className = 'edit-input';
-                todoDescription.innerHTML = '';  // 기존 텍스트 제거
+                todoDescription.innerHTML = '';  
                 todoDescription.appendChild(inputField);
-                inputField.focus();  // 입력 필드에 포커스
+                inputField.focus(); 
 
-                // 엔터 키 또는 포커스 아웃 시 수정 내용 저장
                 inputField.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') {
                         saveEdit(inputField, todoDescription, todoItem);
@@ -142,64 +209,68 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-    // ToDo 항목 삭제 기능
-    if (event.target.classList.contains('delete-btn')) {
-        const todoItem = event.target.closest('.todo-item');
-        todoItem.remove();  // 항목 삭제
-            
-        // 모든 항목이 삭제되었는지 확인하고, 빈 컨테이너를 숨김
-        if (todoItemContainer.children.length === 0) {
-            todoItemContainer.style.display = 'none';
-           }
+        if (event.target.classList.contains('delete-btn')) {
+            const todoItem = event.target.closest('.todo-item');
+            const selectedDate = todoItem.querySelector('.todo-date').textContent.trim();
+
+            if (!todoItem.classList.contains('completed')) {
+                pendingTasks--;
+            } else {
+                completedTasks--;
+            }
+
+            todoItem.remove(); 
+
+            const todoText = todoItem.querySelector('.todo-description').textContent.trim();
+            todoData[selectedDate] = todoData[selectedDate].filter(item => item.description !== todoText);
+
+            if (todoData[selectedDate].length === 0) {
+                delete todoData[selectedDate];
+            }
+
+            if (currentDisplayedDate === selectedDate) {
+                renderTodoList(selectedDate);
+            }
+
+            if (todoItemContainer.children.length === 0) {
+                todoItemContainer.style.display = 'none';
+            }
+
+            updateTaskCounter();
         }
     });
 
     function saveEdit(inputField, todoDescription, todoItem) {
         const updatedText = inputField.value.trim();
-        todoItem.classList.remove('editing');  // 수정 모드 종료
+        const selectedDate = todoItem.querySelector('.todo-date').textContent.trim();
+        const previousText = todoDescription.textContent.trim();
+
+        todoItem.classList.remove('editing'); 
 
         if (updatedText !== '') {
             todoDescription.textContent = updatedText;
+            const itemIndex = todoData[selectedDate].findIndex(item => item.description === previousText);
+            if (itemIndex !== -1) {
+                todoData[selectedDate][itemIndex].description = updatedText;
+            }
+
+            if (currentDisplayedDate === selectedDate) {
+                renderTodoList(selectedDate);
+            }
         } else {
-            todoDescription.textContent = '할 일을 입력하세요';  // 빈 텍스트를 방지
+            todoDescription.textContent = '할 일을 입력하세요'; 
         }
     }
 
-    /* 투두리스트 완료 정도를 나타내는 기능*/
-
     let completedTasks = 0;
     let pendingTasks = 0;
-    
-    // 작업이 올라가고 삭제 될 때, 예를들면 1이 나오게 되면 01로 바꿔줌. 두자리수는 정상적으로 출력.
-    function updateTaskCounter () {
+
+    function updateTaskCounter() {
         completedTasksElement.textContent = completedTasks.toString().padStart(2, '0');
         pendingTasksElement.textContent = pendingTasks.toString().padStart(2, '0');
     }
 
-    // 투두리스트 삭제될 경우
-    todoItemContainer.addEventListener('click', (event) => {
-        if (event.target.classList.contains('delete-btn')) {
-            const todoItem = event.target.closest('.todo-item');
-            if (todoItem.classList.contains('completed')) {
-                completedTasks--;
-            } else {
-                pendingTasks--;
-            }
-        
-        todoItem.remove();
-        updateTaskCounter();
-      }  
-    });
-    //작업 카운터 초기화
-    updateTaskCounter();
-
-
-    // 투두리스트 초기 상태를 숨김
     todoItemContainer.style.display = 'none';
 
-    renderCategories(); // 초기 렌더링
+    renderCategories(); 
 });
-
-
-
-
