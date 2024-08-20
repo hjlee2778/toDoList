@@ -10,9 +10,12 @@
 | --- | --- | --- | --- | --- | --- |
 | 팀원 | 이희주 | 2018111039 | 사회학과 | 융합SW연계전공 | mailto:lhj2778@naver.com |
 
-## 프로젝트 소개 및 이용 방법 (유저 플로우)
-![유저플로우]()
+## 프로젝트 전체 화면 구성
+|Landing Page|
+|<img width="700" alt="랜딩" src="https://github.com/user-attachments/assets/ec13f8a3-3943-4458-b2b3-cbc2f92146fd">|
 
+|Main Page|
+|<img width="700" alt="메인" src="https://github.com/user-attachments/assets/e121bcce-71c9-464b-a6b8-504fd492ce5e">|
 ---
 
 ### 구현결과
