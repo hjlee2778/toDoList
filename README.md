@@ -29,7 +29,7 @@
 |TODO LIST 추가|TODO LIST 완료|
 |:--:|:--:|
 |- 카테고리를 지정 or 추가하여 할 일 추가<br/>- 날짜 또한 자유롭게 설정 가능<br/> |- 수정 및 완료 체크 가능<br/>- 삭제 가능|
-|<img width="350" alt="로그인" src="https://github.com/user-attachments/assets/b75c798b-38b1-4d94-8d7d-0d6463a12a11">|<img width="350" alt="회원가입" src="https://github.com/user-attachments/assets/11953c5d-a791-4e37-8677-de2bab07060c">|
+|<img width="350" alt="로그인" src="https://github.com/user-attachments/assets/b0970f52-e4ba-4666-8834-2f204db4aef7">|<img width="350" alt="회원가입" src="https://github.com/user-attachments/assets/11953c5d-a791-4e37-8677-de2bab07060c">|
 
 |Calendar|Calendar와 LIST 연동|
 |:--:|:--:|
