@@ -12,10 +12,13 @@
 
 ## 프로젝트 전체 화면 구성
 |Landing Page|
+|:--:|
 |<img width="700" alt="랜딩" src="https://github.com/user-attachments/assets/ec13f8a3-3943-4458-b2b3-cbc2f92146fd">|
 
 |Main Page|
-|<img width="700" alt="메인" src="https://github.com/user-attachments/assets/e121bcce-71c9-464b-a6b8-504fd492ce5e">|
+|:--:|
+|<img width="700" alt="랜딩" src="https://github.com/user-attachments/assets/ec13f8a3-3943-4458-b2b3-cbc2f92146fd">|
+
 ---
 
 ### 구현결과
