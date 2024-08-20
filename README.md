@@ -17,7 +17,7 @@
 
 |Main Page|
 |:--:|
-|<img width="700" alt="랜딩" src="https://github.com/user-attachments/assets/ec13f8a3-3943-4458-b2b3-cbc2f92146fd">|
+|<img width="700" alt="랜딩" src="https://github.com/user-attachments/assets/e1743a18-3636-49e1-899c-c2fb6699275e">|
 
 ---
 
