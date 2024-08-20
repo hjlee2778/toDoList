@@ -58,6 +58,7 @@ html, body {
 }
 
 .left-section {
+    position: relative;
     flex: 6; 
     background-size: cover; 
     background-position: center;
@@ -69,9 +70,58 @@ html, body {
     object-fit: cover; 
 }
 
+.calendar-btn {
+    position: absolute;
+    width: 50px;
+    top: 15px;
+    left: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none; 
+}
+
+.overlay.visible {
+    display: block;
+}
+
+.calendar-box {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 90%;  
+    height: 30%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 3rem;
+    font-weight: bold;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
+}
+
+.calendar-box img {
+    width: 60%;
+    height: 60%;
+}
 .right-section {
     flex: 4; 
-    background-color: #5C9677; 
+    background-color: #5E9AC4; 
     padding: 20px; 
     display: flex;
     flex-direction: column;
@@ -80,29 +130,54 @@ html, body {
 }
 
 .todo-background {
-    background-color: #e7f2e9;
+    background-color: #5691A8;
+    border: 1px solid rgba(0, 0, 0, 0.1); /* 약간의 테두리 추가 */
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     width: 100%;
-    max-width: 600px; /* 필요한 경우 너비를 고정 */
+    max-width: 600px; 
     align-self: center;
-    height: 700px; /* 고정된 높이 설정 */
+    height: 700px; 
     box-sizing: border-box;
-    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 생기게 설정 */
+    overflow-y: auto;
     overflow-x: hidden;
     align-items: center;
 }
 
 .todo-input-container {
-    background-color: #f9e8a3;
+    display: flex;
+    flex-direction: column; /* 가로로 쌓이도록 변경 */
+    align-items: center; /* 수직 중앙 정렬 */
+    background-color: #B3E7E8;
     padding: 10px;
     border-radius: 30px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.date-input-container {
+    align-self: start;
+    width: 50%; 
+    margin-bottom: 5px; 
+}
+
+.input-with-button {
+    display: flex;
+    align-items: center; 
+    width: 100%;
+}
+
+#date-input {
+    cursor: pointer;
+    text-align: center;
+    background-color: white;
+    border-radius: 30px;
+    padding: 10px;
+    border: none;
+    width: 50%;
+    font-size: 16px;
+    margin-bottom: 10px;
 }
 
 #todo-input {
@@ -110,74 +185,99 @@ html, body {
     border-radius: 30px;
     padding: 10px;
     border: none;
-    width: 90%;
+    width: 90%; /* 할 일 입력 필드가 남은 너비를 채우도록 설정 */
     font-size: 16px;
-    padding-left: 10px;
-    margin-top: 3px;
-    margin-right: 5px;
+    margin-right: 10px; /* 입력 필드와 플러스 버튼 사이 간격 */
 }
 
 #add-todo-btn {
-    background-color: #f9e8a3;
+    margin-top: 5px;
+    background-color: #B3E7E8;
     border: none;
     cursor: pointer;
-    margin-top: 7px;
     font-size: 20px;
 }
 
-hr {
+.todo-background hr {
     border: none;
     border-top: 1px solid #ccc;
     margin: 20px 0;
 }
 
 .todo-item-container {
-    background-color: #f2e1df;
+    background-color: #D7FCF8;
     padding: 15px;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    width: 95%; /* 컨테이너가 부모 요소의 너비를 가득 채우도록 */
+    width: 100%; 
+}
+
+.todo-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1px 0;
+    margin-left: 2px; /* 왼쪽 여백 추가 */
+}
+
+.todo-description {
+    font-weight: bold;
+    color: black;
+    margin-right: 2px; /* 오른쪽 여백 추가 */
+}
+
+.todo-category {
+    font-size: 14px;
+    color: black;
+    font-weight: bold;
+    margin-right: 2px; /* 오른쪽 여백 추가 */
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 1px 0;
 }
 
 .todo-item {
-    position: relative; /* 체크 아이콘을 절대 위치로 배치하기 위해 */
+    position: relative; 
     display: flex;
-    flex-direction: column; /* 항목을 세로로 쌓도록 설정 */
+    flex-direction: column; 
     padding: 15px;
-    background-color: #dcbdbd;
+    background-color: #B3E7E8;
     border-radius: 15px;
     margin-bottom: 10px;
     position: relative;
-    width: 95%; /* 항목이 부모 요소의 너비를 가득 채우도록 */
+    width: 100%; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* 완료된 항목을 위한 스타일 */
 .todo-item.completed .todo-description {
-    background-color: rgba(0, 0, 0, 0.5); /* 검정색 반투명 배경 */
+    background-color: rgba(0, 0, 0, 0.5); 
     position: relative;
 }
 
 /* 체크 아이콘 스타일 */
 .todo-item.completed::after {
-    content: '✔'; /* 체크 아이콘 */
+    content: '✔'; 
     position: absolute;
     top: 84px;
     left: 50%;
-    transform: translate(-50%, -50%); /* 중앙으로 위치 */
+    transform: translate(-50%, -50%); 
     font-size: 24px;
-    color: white; /* 흰색 체크 표시 */
+    color: white; 
     font-weight: bold;
 }
 
 .todo-title-date {
     display: flex;
-    justify-content: start; /* 날짜와 카테고리가 양쪽 끝에 오도록 설정 */
+    justify-content: start; 
     align-items: center;
     width: 100%;
-    margin-bottom: 10px; /* 설명과의 간격 추가 */
+    margin-bottom: 10px; 
 }
 
 .todo-category, .todo-date {
@@ -203,11 +303,11 @@ hr {
 
 .todo-description {
     background-color: white;
-    padding: 20px; /* 더 큰 크기 설정 */
+    padding: 20px; 
     border-radius: 10px;
     font-size: 14px;
-    width: 90%; /* 설명이 부모 요소의 전체 너비를 차지하도록 설정 */
-    margin-top: 10px; /* 위의 제목과의 간격 추가 */
+    width: 100%; 
+    margin-top: 10px; 
 }
 
 .todo-actions {
@@ -216,8 +316,8 @@ hr {
     position: absolute;
     right: 10px;
     top: 10px;
-    height: auto; /* 액션 버튼들이 제대로 정렬되도록 */
-    flex-direction: row; /* 버튼들이 가로로 나열되도록 설정 */
+    height: auto; 
+    flex-direction: row; 
 }
 
 .todo-actions button {
@@ -243,7 +343,7 @@ hr {
 /*Category*/
 
 .category-search {
-    position: relative; /* 드롭다운이 이 요소를 기준으로 위치하도록 설정 */
+    position: relative; 
     display: flex;
     justify-content: flex-end; 
     width: 100%;
@@ -254,7 +354,7 @@ hr {
 .category-search button {
     min-width: 140px;
     max-width: 190px;
-    background-color: #d1b593;
+    background-color: #5691A8;
     border: none;
     padding: 10px;
     border-radius: 5px;
@@ -278,8 +378,8 @@ hr {
 
 #category-dropdown {
     position: absolute;
-    top: 120%; /* 버튼 바로 아래에 위치하도록 설정 */
-    left: 165px; 
+    top: 120%; 
+    left: 198px; 
     background-color: #f9f9f9;
     min-width: 160px;
     max-width: 160px;
@@ -299,7 +399,7 @@ hr {
 #category-list div {
     padding: 10px;
     cursor: pointer;
-    background-color: #f2e1df;
+    background-color: #82BFF5;
     max-width: 170px;
     margin-bottom: 5px;
     border-radius: 5px;
@@ -308,14 +408,12 @@ hr {
 }
 
 #category-list div:hover {
-    background-color: #e2d1cf;
+    background-color: #82BFF5;
 }
 
 .hidden {
     display: none;
 }
-
-
 
 
 /*Footer*/
@@ -334,18 +432,21 @@ hr {
     padding: 20px;
     border-radius: 10px;
     text-align: center;
+    margin-top: 30px;
     margin-right: 10px;
     font-weight: bold;
-    color: black;
+    color: white;
 }
 
 .completed-tasks {
-    background-color: #f5d3a8;
+    background-color: #5691A8;
     margin-right: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .pending-tasks {
-    background-color: #d1b593;
+    background-color: #5691A8;
+    border: 1px solid rgba(0, 0, 0, 0.1); 
     margin-right: 0;
 }
 

@@ -1,0 +1,115 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.calendar-top {
+    margin-top: 80px;
+}
+
+h1 {
+    font-size: 30px;
+    font-weight: 600;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 1.5rem;
+}
+
+h3 {
+    font-weight: 600;
+}
+
+.calendar {
+    margin: auto;
+    width: 500px;
+    height: 380px;
+    padding: 1rem;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.calendar header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}  
+
+.calendar ul {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.calendar ul li {
+    width: calc(100% / 7);
+    margin-top: 25px;
+    position: relative;
+    z-index: 1;
+}
+
+#prev, #next {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 50%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+#prev::before, #next::before {
+    content: '';
+    width: 50%;
+    height: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-style: solid;
+    border-width: 0.25rem 0.25rem 0 0;
+    border-color: #ccc;
+}
+
+#next::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+#prev::before {
+    transform: translate(-50%, -50%) rotate(-135deg);
+}
+
+#prev:hover::before,
+#next:hover::before {
+    border-color: #000;
+}
+
+.days {
+    font-weight: 600;
+}
+
+.dates li.today {
+    color: #fff;
+    position: relative;
+    z-index: 1;
+}
+
+.dates li.today::before {
+    content: '';
+    width: 2rem;
+    height: 2rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #000;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.dates li.inactive {
+    color: #ccc;
+}
